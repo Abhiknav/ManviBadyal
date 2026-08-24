@@ -1,0 +1,64 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      # A GitHub Pages *project* site is served from /<repo>/, so the app must be
+      # built with a matching base href or every asset 404s. A *user* site
+      # (<user>.github.io) is served from / instead.
+      - name: Compute base href
+        id: base
+        run: |
+          REPO="${GITHUB_REPOSITORY#*/}"
+          if [[ "$REPO" == *.github.io ]]; then
+            echo "href=/" >> "$GITHUB_OUTPUT"
+          else
+            echo "href=/$REPO/" >> "$GITHUB_OUTPUT"
+          fi
+
+      - run: npm run build -- --base-href "${{ steps.base.outputs.href }}"
+
+      # Pages serves 404.html for unknown paths; serving the app keeps deep
+      # links working. .nojekyll stops Jekyll eating files beginning with "_".
+      - name: Add Pages fallbacks
+        run: |
+          cp dist/manvi-portfolio/browser/index.html dist/manvi-portfolio/browser/404.html
+          touch dist/manvi-portfolio/browser/.nojekyll
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/manvi-portfolio/browser
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

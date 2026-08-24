@@ -1,0 +1,176 @@
+/* ============================================================
+   Manvi Badyal — global design system
+   Warm ivory ground, deep ink navy, brass gold accent.
+   ============================================================ */
+
+:root{
+  --paper:#FFFDF9;
+  --paper-tint:#F7F2E9;
+  --cream:#F2ECE0;
+  --card:#FFFFFF;
+  --ink:#0B1420;
+  --ink-soft:#4E586B;
+  --ink-faint:#8A8F9C;
+  --navy:#12305C;
+  --navy-deep:#0B1524;
+  --gold:#966C15;
+  --gold-bright:#C39429;
+  --gold-soft:#E8D5A8;
+  --gold-wash:#F6EDD9;
+  --border:#E5DFD1;
+  --line:#EEE8DB;
+  --shadow-sm: 0 1px 2px rgba(11,20,32,.05), 0 8px 20px -12px rgba(11,20,32,.18);
+  --shadow-lg: 0 4px 12px rgba(11,20,32,.06), 0 28px 56px -24px rgba(11,20,32,.26);
+  --ease: cubic-bezier(.16,1,.3,1);
+}
+
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0A0F17; --paper-tint:#0E141E; --cream:#111823; --card:#131B27;
+    --ink:#F2F4F8; --ink-soft:#AEB8C7; --ink-faint:#78828F;
+    --navy:#8FB4E4; --navy-deep:#060B12;
+    --gold:#D6A93F; --gold-bright:#E5BC55; --gold-soft:#3A2E15; --gold-wash:#241D0E;
+    --border:#242C39; --line:#1B2330;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.35), 0 8px 20px -12px rgba(0,0,0,.6);
+    --shadow-lg: 0 4px 12px rgba(0,0,0,.4), 0 28px 56px -24px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0A0F17; --paper-tint:#0E141E; --cream:#111823; --card:#131B27;
+  --ink:#F2F4F8; --ink-soft:#AEB8C7; --ink-faint:#78828F;
+  --navy:#8FB4E4; --navy-deep:#060B12;
+  --gold:#D6A93F; --gold-bright:#E5BC55; --gold-soft:#3A2E15; --gold-wash:#241D0E;
+  --border:#242C39; --line:#1B2330;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.35), 0 8px 20px -12px rgba(0,0,0,.6);
+  --shadow-lg: 0 4px 12px rgba(0,0,0,.4), 0 28px 56px -24px rgba(0,0,0,.7);
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+@media (prefers-reduced-motion: reduce){ html{ scroll-behavior:auto; } }
+
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Manrope", system-ui, -apple-system, sans-serif;
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+h1,h2,h3,h4{
+  font-family:"Bricolage Grotesque","Manrope",sans-serif;
+  font-weight:700; letter-spacing:-.025em; text-wrap:balance; margin:0; color:var(--ink);
+}
+p{ margin:0; }
+a{ color:inherit; }
+:focus-visible{ outline:2px solid var(--gold-bright); outline-offset:3px; border-radius:4px; }
+
+.serif{
+  font-family:"Instrument Serif", Georgia, serif;
+  font-style:italic; font-weight:400; letter-spacing:0; color:var(--gold);
+}
+
+.wrap{ max-width:1140px; margin:0 auto; padding:0 clamp(20px,5vw,56px); }
+
+.label{
+  font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.7rem; font-weight:600;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--gold);
+  display:inline-flex; align-items:center; gap:9px;
+  &::before{ content:""; width:22px; height:1px; background:var(--gold); opacity:.7; }
+}
+
+.sec-head{
+  max-width:680px; margin-bottom:clamp(34px,5vw,54px);
+  h2{ font-size:clamp(1.8rem,3.7vw,2.7rem); margin-top:16px; }
+  p{ color:var(--ink-soft); margin-top:14px; font-size:1.02rem; }
+}
+
+/* `clip` (not `hidden`) so the horizontal axis is contained without turning the
+   section into a scroll container — entrance transforms slide elements sideways
+   and must never be able to produce a horizontal scrollbar mid-animation. */
+section{ padding:clamp(60px,8vw,104px) 0; position:relative; overflow-x:clip; }
+
+.band-cream{ background:var(--cream); }
+.band-dark{
+  --card:#152137; --border:#26344C; --line:#1E2B41;
+  --ink:#F3F6FA; --ink-soft:#A9B6C9; --ink-faint:#7B8798;
+  --gold:#DDB051; --gold-bright:#EBC163; --gold-wash:#1E2740; --navy:#9CC0EE;
+  background:var(--navy-deep); color:var(--ink);
+  h1,h2,h3,h4{ color:var(--ink); }
+}
+
+.btn{
+  font-family:"Manrope",sans-serif; font-size:.87rem; font-weight:700;
+  text-decoration:none; padding:15px 26px; border-radius:100px;
+  display:inline-flex; align-items:center; gap:9px; cursor:pointer; border:none;
+  transition:transform .22s var(--ease), box-shadow .22s, background .22s, border-color .22s, color .22s;
+  .arw{ transition:transform .25s var(--ease); }
+  &:hover .arw{ transform:translateX(4px); }
+  &.primary{ background:var(--navy-deep); color:#fff; }
+  &.primary:hover{ transform:translateY(-3px); box-shadow:var(--shadow-lg); }
+  &.gold{ background:var(--gold-bright); color:#0B1524; }
+  &.gold:hover{ transform:translateY(-3px); box-shadow:var(--shadow-lg); }
+  &.ghost{ background:transparent; color:var(--ink); border:1.5px solid var(--border); }
+  &.ghost:hover{ transform:translateY(-3px); border-color:var(--ink); }
+}
+
+/* ============================================================
+   Scroll reveal — re-triggers every time an element re-enters
+   the viewport, with a different entrance per variant.
+   ============================================================ */
+.rv{
+  opacity:0;
+  transition:opacity .72s var(--ease), transform .72s var(--ease), filter .72s var(--ease), -webkit-mask-image .8s var(--ease), mask-image .8s var(--ease);
+  transition-delay:calc(var(--i, 0) * 80ms + var(--d, 0ms));
+  will-change:transform, opacity;
+}
+.rv[data-rv="up"]{ transform:translateY(28px); }
+.rv[data-rv="down"]{ transform:translateY(-28px); }
+.rv[data-rv="left"]{ transform:translateX(-44px); }
+.rv[data-rv="right"]{ transform:translateX(44px); }
+.rv[data-rv="corner"]{ transform:translate(56px,34px) rotate(2.5deg); }
+.rv[data-rv="corner-left"]{ transform:translate(-56px,34px) rotate(-2.5deg); }
+.rv[data-rv="scale"]{ transform:scale(.9); }
+.rv[data-rv="tilt"]{ transform:perspective(900px) rotateX(12deg) translateY(30px); transform-origin:top center; }
+.rv[data-rv="blur"]{ transform:translateY(20px); filter:blur(10px); }
+/* A wipe, done with a MASK not clip-path. `clip-path` collapses the element's
+   intersection rect to zero, so IntersectionObserver never reports it as
+   visible, `.in` is never added and the element stays hidden forever. A mask is
+   paint-only and leaves the observed geometry intact. */
+.rv[data-rv="clip"]{
+  transform:translateY(14px);
+  -webkit-mask-image:linear-gradient(to bottom,#000 0%,transparent 0%);
+  mask-image:linear-gradient(to bottom,#000 0%,transparent 0%);
+}
+
+.rv.in{
+  opacity:1; transform:none; filter:none;
+  -webkit-mask-image:linear-gradient(to bottom,#000 130%,transparent 130%);
+  mask-image:linear-gradient(to bottom,#000 130%,transparent 130%);
+}
+
+/* Gentler travel on small screens, where a 56px slide is most of the width. */
+@media (max-width:600px){
+  .rv[data-rv="left"]{ transform:translateX(-24px); }
+  .rv[data-rv="right"]{ transform:translateX(24px); }
+  .rv[data-rv="corner"]{ transform:translate(26px,26px) rotate(1.5deg); }
+  .rv[data-rv="corner-left"]{ transform:translate(-26px,26px) rotate(-1.5deg); }
+}
+
+/* ---- word-by-word text reveal ---- */
+.split .w{ display:inline-block; overflow:hidden; vertical-align:bottom; }
+.split .w > span{
+  display:inline-block; transform:translateY(105%); opacity:0;
+  transition:transform .68s var(--ease), opacity .5s var(--ease);
+}
+.split.in .w > span{ transform:none; opacity:1; }
+
+@media (prefers-reduced-motion: reduce){
+  .rv{ opacity:1 !important; transform:none !important; filter:none !important; transition:none !important;
+       -webkit-mask-image:none !important; mask-image:none !important; }
+  .split .w > span{ transform:none !important; opacity:1 !important; transition:none !important; }
+  *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; }
+}
