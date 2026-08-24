@@ -2,7 +2,7 @@ import { Component, effect, signal } from '@angular/core';
 import { NgFor, NgIf } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RevealDirective } from '../shared/reveal.directive';
-import { CONTACT, CONTACT_SUBJECTS, PROFILE } from '../core/site-content';
+import { CONTACT, CONTACT_SUBJECTS, PROFILE, SUBMIT_ENDPOINT } from '../core/site-content';
 import { EnquiryService } from '../core/enquiry.service';
 
 @Component({
@@ -77,16 +77,22 @@ import { EnquiryService } from '../core/enquiry.service';
         </p>
 
         <div class="result" *ngIf="sent()">
-          <p class="ok">Your mail app should have opened.</p>
-          <p class="hint">Nothing happened? Copy the message and send it yourself.</p>
-          <div class="result-actions">
-            <button class="mini" type="button" (click)="copy()">
-              {{ copied() ? 'Copied' : 'Copy message' }}
-            </button>
-            <a class="mini" [href]="mailHref()">Open mail again</a>
-            <a class="mini" [href]="'mailto:' + profile.email">{{ profile.email }}</a>
-          </div>
-          <pre class="preview">{{ preview() }}</pre>
+          <ng-container *ngIf="delivered(); else mailFallback">
+            <p class="ok">Sent — thank you. Expect a reply within a day.</p>
+          </ng-container>
+
+          <ng-template #mailFallback>
+            <p class="ok">Your mail app should have opened.</p>
+            <p class="hint">Nothing happened? Copy the message and send it yourself.</p>
+            <div class="result-actions">
+              <button class="mini" type="button" (click)="copy()">
+                {{ copied() ? 'Copied' : 'Copy message' }}
+              </button>
+              <a class="mini" [href]="mailHref()">Open mail again</a>
+              <a class="mini" [href]="'mailto:' + profile.email">{{ profile.email }}</a>
+            </div>
+            <pre class="preview">{{ preview() }}</pre>
+          </ng-template>
         </div>
       </form>
     </div>
@@ -195,6 +201,7 @@ export class ContactComponent {
   subjects = CONTACT_SUBJECTS;
   sent = signal(false);
   copied = signal(false);
+  delivered = signal(false);
 
   form = this.fb.group({
     name: ['', Validators.required],
@@ -257,15 +264,32 @@ export class ContactComponent {
   }
 
   /**
-   * No backend yet — hand the composed brief to the visitor's mail client, then
-   * always show the composed text so the click has a visible result even when
-   * no mail handler is registered (the previous version appeared to do nothing).
+   * POSTs to SUBMIT_ENDPOINT when one is configured. Otherwise hands the
+   * composed brief to the visitor's mail client and always shows the composed
+   * text, so the click has a visible result even when no mail handler is
+   * registered (an earlier version silently appeared to do nothing).
    */
-  submit(): void {
+  async submit(): Promise<void> {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
+
+    if (SUBMIT_ENDPOINT) {
+      try {
+        await fetch(SUBMIT_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ kind: 'enquiry', ...this.form.value }),
+        });
+        this.delivered.set(true);
+        this.sent.set(true);
+        return;
+      } catch {
+        // Fall through to the mail client so the message is not simply lost.
+      }
+    }
+
     // An anchor click is more reliable than assigning location.href, which some
     // browsers ignore for mailto: when no handler is registered.
     const a = document.createElement('a');

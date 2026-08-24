@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://manvibadyal.github.io/sitemap.xml
+Sitemap: https://abhiknav.github.io/manvi-portfolio/sitemap.xml

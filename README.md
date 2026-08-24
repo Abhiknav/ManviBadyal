@@ -65,3 +65,52 @@ under `core/` and inject it into the relevant component.
 - Scroll animations use `IntersectionObserver`, which does not fire while a
   document is hidden; each directive has a fallback so content is never left
   stranded invisible.
+
+## Deploying
+
+The site deploys to GitHub Pages automatically via `.github/workflows/deploy.yml`
+on every push to `main`.
+
+### One-time setup
+
+1. Create an empty **public** repo named `manvi-portfolio` at
+   <https://github.com/new> — no README, no .gitignore, no licence.
+2. Push:
+
+   ```bash
+   git remote add origin git@github.com:Abhiknav/manvi-portfolio.git
+   git push -u origin main
+   ```
+
+3. In the repo: **Settings → Pages → Build and deployment → Source =
+   "GitHub Actions"**.
+
+The workflow then builds with the correct `--base-href` and publishes to
+<https://abhiknav.github.io/manvi-portfolio/>.
+
+### Custom domain
+
+Add the domain under Settings → Pages, then update the four absolute URLs in
+`src/index.html` (canonical, `og:url`, `og:image`, `twitter:image`) plus
+`src/robots.txt` and `src/sitemap.xml`, and commit.
+
+### Netlify / Vercel
+
+`netlify.toml` and `vercel.json` are committed — connect the repo and both build
+without further configuration.
+
+## Making the forms actually deliver
+
+Both the contact form and the student feedback form currently work **without a
+server**: contact opens the visitor's mail app, feedback saves to that visitor's
+own browser. Neither reaches Manvi automatically.
+
+To deliver them for real, set one value in `src/app/core/site-content.ts`:
+
+```ts
+export const SUBMIT_ENDPOINT = 'https://formspree.io/f/XXXXXXXX';
+```
+
+Get that URL free at <https://formspree.io> (sign up, create a form, copy the
+endpoint). Feedback submissions POST there as JSON. The UI stops showing the
+"saved to this browser only" notice once an endpoint is set.
