@@ -22,6 +22,7 @@ import { TEACHING } from '../core/site-content';
       <div class="now" [appReveal]="0" variant="corner-left">
         <span class="badge"><i></i>Currently teaching</span>
         <h3>{{ t.nowTitle }}</h3>
+        <div class="org">{{ t.nowOrg }}</div>
         <div class="meta">{{ t.nowMeta }}</div>
         <p class="body-copy" [appSplitText]="t.nowBody" [stagger]="22"></p>
         <div class="stats">
@@ -73,7 +74,8 @@ import { TEACHING } from '../core/site-content';
 @keyframes blip{ 0%,100%{ opacity:1 } 50%{ opacity:.25 } }
 
 .now h3{ font-size:1.5rem; margin-top:18px; letter-spacing:-.03em; }
-.now .meta{ font-family:"JetBrains Mono",monospace; font-size:.73rem; color:var(--gold); margin-top:8px; letter-spacing:.05em; }
+.now .org{ font-size:.98rem; color:var(--ink); font-weight:600; margin-top:6px; }
+.now .meta{ font-family:"JetBrains Mono",monospace; font-size:.73rem; color:var(--gold); margin-top:6px; letter-spacing:.05em; }
 .now .body-copy{ color:var(--ink-soft); font-size:.95rem; margin-top:16px; }
 
 .stats{ display:flex; gap:26px; margin-top:24px; padding-top:22px; border-top:1px solid var(--border); flex-wrap:wrap; }

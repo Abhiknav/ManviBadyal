@@ -38,6 +38,8 @@ html = html.replace(/<link\b[^>]*>/gi, (tag) => {
   const rel = (attr(tag, 'rel') || '').toLowerCase();
   const href = attr(tag, 'href');
   if (rel === 'icon' || rel === 'shortcut icon') return '';
+  // The touch icon points at a local file; inline it rather than leave a 404.
+  if (rel === 'apple-touch-icon') return `<link rel="apple-touch-icon" href="${imgUri}">`;
   if (rel !== 'stylesheet' || !href) return tag;          // keep preconnect etc.
   const file = clean(href);
   if (!exists(file)) return tag;                          // remote font CSS

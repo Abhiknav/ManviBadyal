@@ -73,12 +73,12 @@ on every push to `main`.
 
 ### One-time setup
 
-1. Create an empty **public** repo named `manvi-portfolio` at
+1. Create an empty **public** repo named `ManviBadyal` at
    <https://github.com/new> — no README, no .gitignore, no licence.
 2. Push:
 
    ```bash
-   git remote add origin git@github.com:Abhiknav/manvi-portfolio.git
+   git remote add origin git@github.com:Abhiknav/ManviBadyal.git
    git push -u origin main
    ```
 
@@ -86,7 +86,7 @@ on every push to `main`.
    "GitHub Actions"**.
 
 The workflow then builds with the correct `--base-href` and publishes to
-<https://abhiknav.github.io/manvi-portfolio/>.
+<https://abhiknav.github.io/ManviBadyal/>.
 
 ### Custom domain
 

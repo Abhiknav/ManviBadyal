@@ -5,8 +5,6 @@
  * work, not the person. Keep new copy in the same register.
  *
  * NOTE FOR MANVI / EDITOR:
- *  - `profile.title` and `profile.institution` are best guesses. Replace with
- *    the exact designation and college name.
  *  - `testimonials` are PLACEHOLDER text. Replace with real student feedback.
  *  - `publications` are PLACEHOLDER entries. Replace with real papers.
  *  - The VPN Lawyers association is PAST. End date is a guess — correct it.
@@ -14,10 +12,11 @@
 
 export const PROFILE = {
   name: 'Manvi Badyal',
-  title: 'Assistant Professor of Law',
+  title: 'Assistant Professor',
   secondTitle: 'Advocate, Bar Council of Punjab & Haryana',
   formerRole: 'Formerly Legal Associate, VPN Lawyers (Australia), Chandigarh',
-  institution: 'Faculty of Law',           // ← replace with real institution
+  institution: 'Amritsar Group of Colleges',
+  institutionShort: 'AGC, Amritsar',
   enrolment: 'PH/8438/2022',
   email: 'manvibadyal07@gmail.com',
   phone: '+91 82647 83139',
@@ -32,8 +31,9 @@ export const HERO = {
   headlineA: 'Teaching law the way',
   headlineAccent: "it's actually argued.",
   sub:
-    'Assistant Professor of Law and enrolled advocate. Three years of independent practice before ' +
-    'the move into full-time teaching — and that difference shows up in every class on procedure.',
+    'Assistant Professor at Amritsar Group of Colleges, and an enrolled advocate. Three years of ' +
+    'independent practice before the move into full-time teaching — and that difference shows up in ' +
+    'every class on procedure.',
   chips: [
     { v: '3', suffix: '+', k: 'Years in practice' },
     { v: 'NET', k: 'Qualified' },
@@ -65,7 +65,8 @@ export const ABOUT = {
 export const TEACHING = {
   heading: 'In the lecture hall.',
   sub: 'Criminal law and procedure, taught from files that were actually carried.',
-  nowTitle: 'Assistant Professor of Law',
+  nowTitle: 'Assistant Professor',
+  nowOrg: 'Amritsar Group of Colleges (AGC), Amritsar',
   nowMeta: 'LL.B. & LL.M. · Criminal Law & Procedure',
   /** Rendered word-by-word with the split-text animation. */
   nowBody:
@@ -176,7 +177,7 @@ export const JOURNEY = {
     { when: '2024', tag: 'academe', t: 'LL.M. Criminal Law — 8.27 CGPA', org: 'Guru Nanak Dev University, Amritsar', nt: 'NET qualified' },
     { when: 'Jun 2024 — 2025', tag: 'practice', t: 'Legal Associate, Chandigarh', org: 'VPN Lawyers — Australian practice', nt: 'Drafting to Australian standards · three increments in seven months' },
     { when: 'Feb 2025 — Present', tag: 'academe', t: 'Ph.D. (Law), Criminal Law', org: 'Guru Nanak Dev University', nt: 'Pursued alongside teaching' },
-    { when: 'Present', tag: 'academe', t: 'Assistant Professor of Law', org: 'Full-time faculty', nt: 'Criminal law and procedure, LL.B. & LL.M.' },
+    { when: 'Present', tag: 'academe', t: 'Assistant Professor', org: 'Amritsar Group of Colleges (AGC), Amritsar', nt: 'Criminal law and procedure, LL.B. & LL.M.' },
   ],
 };
 

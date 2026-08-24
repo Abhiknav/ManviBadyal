@@ -10,7 +10,7 @@ import { PROFILE } from '../core/site-content';
     <div class="left">
       <span class="brand">{{ profile.name }}<span class="dot">.</span></span>
       <span class="roles">
-        <strong>{{ profile.title }}</strong>
+        <strong>{{ profile.title }}, {{ profile.institutionShort }}</strong>
         <em>·</em>
         <span>{{ profile.secondTitle }}</span>
         <em>·</em>
