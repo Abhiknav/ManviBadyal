@@ -5,9 +5,10 @@
  * work, not the person. Keep new copy in the same register.
  *
  * NOTE FOR MANVI / EDITOR:
- *  - `testimonials` are PLACEHOLDER text. Replace with real student feedback.
- *  - `publications` are PLACEHOLDER entries. Replace with real papers.
- *  - The VPN Lawyers association is PAST. End date is a guess — correct it.
+ *  - STUDENTS.quotes are still PLACEHOLDER text. Replace with real feedback.
+ *  - PUBLICATIONS entries are real, but list the book/journal rather than the
+ *    individual chapter or article title, which was not supplied. Add those
+ *    when available.
  */
 
 export const PROFILE = {
@@ -121,33 +122,96 @@ export const PRACTICE = {
   ],
 };
 
+/**
+ * Real publication record.
+ *
+ * `title` holds the book or journal the work appears in, because the individual
+ * chapter/article titles were not supplied — add a `piece` field to any entry
+ * once you have it and it will render above the venue.
+ */
 export const PUBLICATIONS = {
   heading: 'Papers &',
   headingAccent: 'journals.',
   sub: 'Writing that sits between the classroom and the courtroom.',
-  /** PLACEHOLDER — replace with real publications. */
   items: [
     {
-      year: '2025',
-      type: 'Journal Article',
-      title: 'Anticipatory Bail and the Limits of Judicial Discretion',
-      venue: 'Placeholder — journal name & volume',
-      abstract: 'Examines how discretion under anticipatory bail provisions is exercised across trial courts, and argues for clearer articulation of reasons at the district level.',
+      type: 'Book chapter',
+      status: 'published' as const,
+      title: 'Traditional and Comparative Jurisprudence of Criminal Law',
+      meta: 'Chapter contribution',
     },
     {
-      year: '2024',
-      type: 'Conference Paper',
-      title: 'Procedural Delay in Recovery Proceedings: A District Court Study',
-      venue: 'Placeholder — conference name',
-      abstract: 'A study of adjournment patterns in money recovery suits and their effect on realisation timelines for institutional creditors.',
+      type: 'Book chapter',
+      status: 'published' as const,
+      title: 'The Indian Judiciary — A Comprehensive Treatise on Multidimensional Justice',
+      meta: 'Chapter contribution',
     },
     {
-      year: '2024',
-      type: 'Journal Article',
-      title: 'Evidence and the Digital Record in Criminal Trials',
-      venue: 'Placeholder — journal name & volume',
-      abstract: 'Considers the treatment of electronic evidence at the trial stage and the practical burden certification requirements place on prosecution and defence alike.',
+      type: 'Journal article',
+      status: 'published' as const,
+      title: 'Mumukshu Journal of Humanities',
+      meta: 'International peer-reviewed · Vol. 17, Issue 2 · December 2025',
     },
+    {
+      type: 'Journal article',
+      status: 'published' as const,
+      title: 'Journal of Management and Health Sciences',
+      meta: 'Vol. 4, Issue 4 · March 2026',
+    },
+    {
+      type: 'Book chapter',
+      status: 'review' as const,
+      title: 'Dr B. R. Ambedkar: Architect of Modern India',
+      meta: 'Chapter submitted',
+    },
+    {
+      type: 'Journal article',
+      status: 'forthcoming' as const,
+      title: 'Taylor & Francis',
+      meta: 'Accepted for publication',
+    },
+  ],
+};
+
+export const CONFERENCES = {
+  heading: 'Conferences, seminars',
+  headingAccent: '& certifications.',
+  sub: 'Papers presented and programmes completed.',
+  papers: [
+    {
+      role: 'Paper presented',
+      title: 'Role of Judiciary in Upholding Social, Economic and Political Justice',
+      host: 'International Conference · Bennett University',
+    },
+    {
+      role: 'Presented',
+      title: 'Artificial Intelligence and Information Security',
+      host: 'AGC International Conference · Amritsar Group of Colleges',
+    },
+    {
+      role: 'Presented',
+      title: 'Governance and Development',
+      host: 'Seminar · St. Soldier Law College, Jalandhar',
+    },
+    {
+      role: 'Participated',
+      title: 'Dr B. R. Ambedkar: Architect of Modern India',
+      host: 'National Seminar · Guru Nanak Dev University',
+    },
+    {
+      role: 'Participated',
+      title: 'Empowering the Future: Innovation in Energy Sustainability and Climate Action',
+      host: 'AICTE–VAANI Seminar',
+    },
+    {
+      role: 'Participated',
+      title: 'Intellectual Property Rights and Patent',
+      host: 'Conference / seminar',
+    },
+  ],
+  certifications: [
+    { icon: 'cap', t: 'Faculty Induction Programme', d: 'Completed' },
+    { icon: 'book', t: 'Short-Term Course', d: 'Completed' },
   ],
 };
 
