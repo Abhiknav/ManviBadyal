@@ -211,11 +211,15 @@ export const CONTACT = {
 export const CONTACT_SUBJECTS: string[] = CONTACT.groups.flatMap((g) => g.options);
 
 /**
- * Set this to a URL to POST contact + feedback submissions to a real backend
- * (Formspree, a Cloud Function, your own API). While it is empty the site falls
- * back to local behaviour and says so plainly in the UI.
+ * Where contact enquiries and student feedback are POSTed.
+ *
+ * Formspree AJAX endpoint — send JSON with `Accept: application/json` and it
+ * responds with JSON instead of an HTML redirect. A `email` field in the body
+ * becomes the reply-to address; `_subject` sets the notification subject line.
+ *
+ * Set to '' to fall back to local-only behaviour (mailto + localStorage).
  */
-export const SUBMIT_ENDPOINT = '';
+export const SUBMIT_ENDPOINT = 'https://formspree.io/f/xzeplonn';
 
 export const RIBBON_A = [
   'Criminal Law', 'Legal Drafting', 'Judgment Analysis', 'Moot Court Coaching',

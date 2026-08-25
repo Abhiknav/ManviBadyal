@@ -63,15 +63,19 @@ import { FeedbackService } from '../core/feedback.service';
         </label>
 
         <div class="actions">
-          <button class="btn gold" type="submit">Post review <span class="arw">→</span></button>
+          <button class="btn gold" type="submit" [disabled]="busy()">
+            {{ busy() ? 'Sending…' : 'Post review' }} <span class="arw">→</span>
+          </button>
           <span class="note" *ngIf="!fb.hasBackend">
             Saved to this browser and marked for review — not yet delivered.
-            Connect a backend to receive these.
           </span>
         </div>
 
-        <p class="done" *ngIf="done()">
-          Thanks — your review is showing above, marked <strong>awaiting review</strong>.
+        <p class="done" *ngIf="done() === 'sent'">
+          Thanks — sent for review, and showing above.
+        </p>
+        <p class="done warn" *ngIf="done() === 'local'">
+          Saved on this device, but it could not be delivered just now.
         </p>
       </form>
     </div>
@@ -139,12 +143,16 @@ em{ font-style:normal; font-size:.75rem; color:#C0392B; }
 .actions{ display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
 .note{ font-size:.75rem; color:var(--ink-faint); max-width:380px; line-height:1.45; }
 .done{ font-size:.85rem; color:var(--gold); }
+.done.warn{ color:#B04A3A; }
+button[disabled]{ opacity:.6; cursor:default; }
   `],
 })
 export class StudentsComponent {
   s = STUDENTS;
   open = signal(false);
-  done = signal(false);
+  busy = signal(false);
+  /** null = nothing submitted yet; otherwise how the last submission went. */
+  done = signal<'sent' | 'local' | null>(null);
 
   form = this.builder.group({
     name: [''],
@@ -159,7 +167,7 @@ export class StudentsComponent {
   /** Duplicated so the -50% marquee translate loops seamlessly. */
   doubled() { const q = this.fb.all(); return [...q, ...q]; }
 
-  toggle(): void { this.open.update((v) => !v); this.done.set(false); }
+  toggle(): void { this.open.update((v) => !v); this.done.set(null); }
 
   invalid(k: string): boolean {
     const c = this.form.get(k);
@@ -170,8 +178,13 @@ export class StudentsComponent {
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }
     const { name, course, message } = this.form.value;
     const who = [name, course].filter(Boolean).join(' · ') || 'Student';
-    await this.fb.submit({ q: message ?? '', who });
-    this.form.reset();
-    this.done.set(true);
+    this.busy.set(true);
+    try {
+      const result = await this.fb.submit({ q: message ?? '', who });
+      this.form.reset();
+      this.done.set(result);
+    } finally {
+      this.busy.set(false);
+    }
   }
 }

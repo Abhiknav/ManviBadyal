@@ -276,18 +276,28 @@ export class ContactComponent {
     }
 
     if (SUBMIT_ENDPOINT) {
+      const { name, email, subject, message } = this.form.value;
       try {
-        await fetch(SUBMIT_ENDPOINT, {
+        const res = await fetch(SUBMIT_ENDPOINT, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify({ kind: 'enquiry', ...this.form.value }),
+          body: JSON.stringify({
+            name, email, subject, message,
+            // `email` becomes the reply-to; `_subject` titles the notification.
+            _subject: `Website enquiry — ${subject}`,
+          }),
         });
-        this.delivered.set(true);
-        this.sent.set(true);
-        return;
+        // fetch only rejects on network failure, so a 4xx/5xx would otherwise be
+        // reported to the visitor as a successful send.
+        if (res.ok) {
+          this.delivered.set(true);
+          this.sent.set(true);
+          return;
+        }
       } catch {
-        // Fall through to the mail client so the message is not simply lost.
+        // Network error — fall through to the mail client below.
       }
+      // Delivery failed: fall through so the message is not silently lost.
     }
 
     // An anchor click is more reliable than assigning location.href, which some

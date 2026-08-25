@@ -67,12 +67,17 @@ export class FeedbackService {
     if (!SUBMIT_ENDPOINT) return 'local';
 
     try {
-      await fetch(SUBMIT_ENDPOINT, {
+      const res = await fetch(SUBMIT_ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ kind: 'feedback', ...record }),
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          message: record.q,
+          from: record.who,
+          _subject: `Student review — ${record.who}`,
+        }),
       });
-      return 'sent';
+      // fetch resolves on 4xx/5xx too, so the status must be checked explicitly.
+      return res.ok ? 'sent' : 'local';
     } catch {
       return 'local';
     }
