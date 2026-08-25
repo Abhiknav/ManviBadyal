@@ -1,22 +1,24 @@
 import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { NgFor, NgIf } from '@angular/common';
-import { RevealDirective } from '../shared/reveal.directive';
 import { JOURNEY } from '../core/site-content';
 
 @Component({
   selector: 'app-journey',
   standalone: true,
-  imports: [NgFor, NgIf, RevealDirective],
+  imports: [NgFor, NgIf],
   template: `
 <section id="journey" class="band-cream">
   <div class="wrap">
-    <div class="sec-head" [appReveal]="0" variant="clip">
+    <!-- No entrance animation in this section by design: the timeline reads
+         better arriving already assembled, with only the scroll-driven spine
+         and the dot hover as movement. -->
+    <div class="sec-head">
       <span class="label">Journey</span>
       <h2>{{ j.heading }}</h2>
     </div>
 
     <div class="tl" #tl>
-      <div class="item" *ngFor="let it of j.items; let i = index" [appReveal]="0" variant="left">
+      <div class="item" *ngFor="let it of j.items; let i = index">
         <span class="when">{{ it.when }}</span>
         <div class="body">
           <span class="tag" [class.practice]="it.tag === 'practice'">{{ it.tag === 'practice' ? 'Practice' : 'Academe' }}</span>
@@ -44,9 +46,11 @@ import { JOURNEY } from '../core/site-content';
 .item::before{
   content:""; position:absolute; left:-34px; top:6px; width:12px; height:12px; border-radius:50%;
   background:var(--cream); border:2.5px solid var(--gold);
+  /* halo was previously tied to the reveal's .in class; the section no longer
+     reveals, so it belongs on the base state */
+  box-shadow:0 0 0 5px var(--gold-wash);
   transition:transform .5s cubic-bezier(.34,1.56,.64,1), box-shadow .4s;
 }
-.item.in::before{ box-shadow:0 0 0 5px var(--gold-wash); }
 .item:hover::before{ transform:scale(1.25); }
 
 .when{ font-family:"JetBrains Mono",monospace; font-size:.75rem; font-weight:600; color:var(--ink-faint); padding-top:3px; }
