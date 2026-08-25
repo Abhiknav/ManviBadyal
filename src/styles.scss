@@ -121,43 +121,62 @@ section{ padding:clamp(60px,8vw,104px) 0; position:relative; overflow-x:clip; }
    Scroll reveal — re-triggers every time an element re-enters
    the viewport, with a different entrance per variant.
    ============================================================ */
-.rv{
-  opacity:0;
-  transition:opacity .72s var(--ease), transform .72s var(--ease), filter .72s var(--ease), -webkit-mask-image .8s var(--ease), mask-image .8s var(--ease);
-  transition-delay:calc(var(--i, 0) * 80ms + var(--d, 0ms));
-  will-change:transform, opacity;
+/* Reveals run as ANIMATIONS, not transitions.
+   A transition here loses: every card also declares its own hover transition
+   (`transition: transform .3s`) at equal specificity, and component styles are
+   emitted after this file — so the hover rule silently overrode the reveal's
+   duration and wiped out the stagger, making every entrance a fast, uniform
+   twitch. Animations occupy a separate channel, so both work properly.
+   `fill-mode: backwards` holds the offset pose during the stagger delay and
+   then hands the element back to its normal styles, leaving hover untouched. */
+.rv{ opacity:0; }
+.rv.in{
+  opacity:1;
+  animation-duration:1s;
+  animation-timing-function:var(--ease);
+  animation-fill-mode:backwards;
+  animation-delay:calc(var(--i, 0) * 150ms + var(--d, 0ms));
 }
-.rv[data-rv="up"]{ transform:translateY(28px); }
-.rv[data-rv="down"]{ transform:translateY(-28px); }
-.rv[data-rv="left"]{ transform:translateX(-44px); }
-.rv[data-rv="right"]{ transform:translateX(44px); }
-.rv[data-rv="corner"]{ transform:translate(56px,34px) rotate(2.5deg); }
-.rv[data-rv="corner-left"]{ transform:translate(-56px,34px) rotate(-2.5deg); }
-.rv[data-rv="scale"]{ transform:scale(.9); }
-.rv[data-rv="tilt"]{ transform:perspective(900px) rotateX(12deg) translateY(30px); transform-origin:top center; }
-.rv[data-rv="blur"]{ transform:translateY(20px); filter:blur(10px); }
+
+.rv[data-rv="up"].in{ animation-name:rv-up; }
+.rv[data-rv="down"].in{ animation-name:rv-down; }
+.rv[data-rv="left"].in{ animation-name:rv-left; }
+.rv[data-rv="right"].in{ animation-name:rv-right; }
+.rv[data-rv="corner"].in{ animation-name:rv-corner; }
+.rv[data-rv="corner-left"].in{ animation-name:rv-corner-left; }
+.rv[data-rv="scale"].in{ animation-name:rv-scale; }
+.rv[data-rv="tilt"].in{ animation-name:rv-tilt; transform-origin:top center; }
+.rv[data-rv="blur"].in{ animation-name:rv-blur; }
+.rv[data-rv="clip"].in{ animation-name:rv-clip; }
+
+@keyframes rv-up{ from{ opacity:0; transform:translateY(96px); } }
+@keyframes rv-down{ from{ opacity:0; transform:translateY(-84px); } }
+@keyframes rv-left{ from{ opacity:0; transform:translateX(-190px); } }
+@keyframes rv-right{ from{ opacity:0; transform:translateX(190px); } }
+@keyframes rv-corner{ from{ opacity:0; transform:translate(340px,130px) rotate(9deg) scale(.88); } }
+@keyframes rv-corner-left{ from{ opacity:0; transform:translate(-340px,130px) rotate(-9deg) scale(.88); } }
+@keyframes rv-scale{ from{ opacity:0; transform:scale(.62) translateY(70px); } }
+@keyframes rv-tilt{ from{ opacity:0; transform:perspective(900px) rotateX(30deg) translateY(100px) scale(.93); } }
+@keyframes rv-blur{ from{ opacity:0; transform:translateY(80px); filter:blur(16px); } }
+@keyframes rv-clip{
+  0%{ opacity:0; transform:translateY(34px);
+      -webkit-mask-image:linear-gradient(to bottom,#000 0%,transparent 0%);
+      mask-image:linear-gradient(to bottom,#000 0%,transparent 0%); }
+  100%{ opacity:1; transform:none;
+      -webkit-mask-image:linear-gradient(to bottom,#000 140%,transparent 140%);
+      mask-image:linear-gradient(to bottom,#000 140%,transparent 140%); }
+}
 /* A wipe, done with a MASK not clip-path. `clip-path` collapses the element's
    intersection rect to zero, so IntersectionObserver never reports it as
    visible, `.in` is never added and the element stays hidden forever. A mask is
    paint-only and leaves the observed geometry intact. */
-.rv[data-rv="clip"]{
-  transform:translateY(14px);
-  -webkit-mask-image:linear-gradient(to bottom,#000 0%,transparent 0%);
-  mask-image:linear-gradient(to bottom,#000 0%,transparent 0%);
-}
-
-.rv.in{
-  opacity:1; transform:none; filter:none;
-  -webkit-mask-image:linear-gradient(to bottom,#000 130%,transparent 130%);
-  mask-image:linear-gradient(to bottom,#000 130%,transparent 130%);
-}
-
-/* Gentler travel on small screens, where a 56px slide is most of the width. */
-@media (max-width:600px){
-  .rv[data-rv="left"]{ transform:translateX(-24px); }
-  .rv[data-rv="right"]{ transform:translateX(24px); }
-  .rv[data-rv="corner"]{ transform:translate(26px,26px) rotate(1.5deg); }
-  .rv[data-rv="corner-left"]{ transform:translate(-26px,26px) rotate(-1.5deg); }
+/* Still obvious on phones, but scaled to the narrower viewport. */
+@media (max-width:700px){
+  @keyframes rv-left{ from{ opacity:0; transform:translateX(-95px); } }
+  @keyframes rv-right{ from{ opacity:0; transform:translateX(95px); } }
+  @keyframes rv-corner{ from{ opacity:0; transform:translate(160px,85px) rotate(7deg) scale(.9); } }
+  @keyframes rv-corner-left{ from{ opacity:0; transform:translate(-160px,85px) rotate(-7deg) scale(.9); } }
+  @keyframes rv-up{ from{ opacity:0; transform:translateY(64px); } }
 }
 
 /* ---- word-by-word text reveal ---- */
@@ -169,7 +188,7 @@ section{ padding:clamp(60px,8vw,104px) 0; position:relative; overflow-x:clip; }
 .split.in .w > span{ transform:none; opacity:1; }
 
 @media (prefers-reduced-motion: reduce){
-  .rv{ opacity:1 !important; transform:none !important; filter:none !important; transition:none !important;
+  .rv{ opacity:1 !important; animation:none !important;
        -webkit-mask-image:none !important; mask-image:none !important; }
   .split .w > span{ transform:none !important; opacity:1 !important; transition:none !important; }
   *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; }
