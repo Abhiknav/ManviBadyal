@@ -27,6 +27,8 @@ export const PROFILE = {
   formerRole: 'Formerly Legal Associate, VPN Lawyers (Australia), Chandigarh',
   institution: 'Amritsar Group of Colleges',
   institutionShort: 'AGC, Amritsar',
+  /** Second line under the name on the hero photo. */
+  captionOrg: 'Amritsar Law College',
   enrolment: 'PH/8438/2022',
   email: 'manvibadyal07@gmail.com',
   phone: '+91 82647 83139',

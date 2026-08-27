@@ -44,6 +44,7 @@ import { HERO, PROFILE } from '../core/site-content';
         <div class="cap">
           <div class="nm">{{ profile.name }}</div>
           <div class="rl">{{ profile.title }}</div>
+          <div class="org">{{ profile.captionOrg }}</div>
         </div>
       </div>
 
@@ -121,6 +122,7 @@ h1 .serif{ font-size:1.05em; }
 .cap{ position:absolute; left:20px; right:20px; bottom:18px; z-index:2; color:#fff; }
 .cap .nm{ font-family:"Bricolage Grotesque",sans-serif; font-weight:700; font-size:1.12rem; letter-spacing:-.02em; }
 .cap .rl{ font-family:"JetBrains Mono",monospace; font-size:.63rem; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.85); margin-top:4px; }
+.cap .org{ font-family:"JetBrains Mono",monospace; font-size:.63rem; letter-spacing:.1em; text-transform:uppercase; color:var(--gold-bright); margin-top:2px; }
 
 .chip{
   position:absolute; z-index:3; background:var(--card); border:1px solid var(--border);
