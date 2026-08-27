@@ -11,8 +11,17 @@
  *    when available.
  */
 
+/**
+ * Files under src/assets keep a fixed filename in the build (only JS and CSS
+ * get content hashes), so browsers happily serve a stale copy after the file
+ * changes. Bump this number whenever the portrait is replaced and every visitor
+ * picks up the new one immediately instead of waiting for their cache to lapse.
+ */
+export const PHOTO_VERSION = 2;
+
 export const PROFILE = {
   name: 'Manvi Badyal',
+  photo: `assets/img/manvi.jpg?v=${PHOTO_VERSION}`,
   title: 'Assistant Professor',
   secondTitle: 'Advocate, Bar Council of Punjab & Haryana',
   formerRole: 'Formerly Legal Associate, VPN Lawyers (Australia), Chandigarh',

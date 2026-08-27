@@ -40,7 +40,7 @@ import { HERO, PROFILE } from '../core/site-content';
     <div class="photo-zone">
       <div class="frame" aria-hidden="true"></div>
       <div class="card">
-        <img src="assets/img/manvi.jpg" alt="Manvi Badyal" width="620" height="620">
+        <img [src]="profile.photo" alt="Manvi Badyal" width="800" height="1200">
         <div class="cap">
           <div class="nm">{{ profile.name }}</div>
           <div class="rl">{{ profile.title }}</div>
